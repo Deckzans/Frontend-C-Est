@@ -5,7 +5,7 @@ export const ImgIngresar = () => {
   return (
     <Box
     sx={{
-      width: '120%',
+      width: '100%',
       height: "100%", // Ajusta la altura según tu diseño
       display: 'flex',
       justifyContent: 'center',

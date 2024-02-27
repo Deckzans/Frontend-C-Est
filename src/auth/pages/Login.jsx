@@ -3,8 +3,6 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { loginStyles } from '../styles/StylesLogin'
 import { FormIngresar,ImgIngresar} from "../components";
 
-
-
 export const Login = () => {
   return (
     <Container component="main" maxWidth="md" sx={loginStyles.container}>
