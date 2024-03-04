@@ -1,17 +1,20 @@
 import Box from "@mui/material/Box";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
 
 export const Footer = () => {
+  const trigger = useScrollTrigger();
+
     return (
-        <footer>
+        <footer >
             <Box
                 sx={{
                     backgroundColor: '#cccccc',
-                    height: '50px',
+                    height: '3rem',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center', // Cambiado de 'flex-end' a 'center'
                     width: '100%',
-                    position: 'fixed',
+                    // position: 'fixed',
                     bottom: 0,
                     zIndex: 1000,
                 }}

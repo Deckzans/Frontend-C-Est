@@ -22,7 +22,8 @@ const settings = ['Cerrar Sesión'];
 const BarraMenu = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const imgUrl = '/imgC5/logo.jpg'
+  const imgUser = '/imgC5/userlogo.jpg'
   const handleCerrarSesion = () => {
     useAppState.setState({
       token: null,
@@ -66,7 +67,7 @@ const BarraMenu = () => {
             }}
           >
             <img
-              src="./imgC5/logo.jpg"
+              src={imgUrl}
               style={{ width: 45, maxHeight: 60 }}
             />
           </Typography>
@@ -104,7 +105,7 @@ const BarraMenu = () => {
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
                     key={page}
-                    to={`/${page.toLowerCase()}`}
+                    to={`/home/${page.toLowerCase()}`}
                     style={{ textDecoration: 'none' }}
                   >
                     <Button sx={{ my: 2, color: 'black' }}>
@@ -134,7 +135,7 @@ const BarraMenu = () => {
             }}
           >
             <img
-              src="./imgC5/logo.jpg"
+              src={imgUrl}
               style={{ width: 40, maxHeight: 40 }}
             />
           </Typography>
@@ -142,7 +143,7 @@ const BarraMenu = () => {
             {pages.map((page) => (
               <Link
                 key={page}
-                to={`/${page.toLowerCase()}`}
+                to={`/home/${page.toLowerCase()}`}
                 style={{ textDecoration: 'none' }}
               >
                 <Button sx={{ my: 2, color: 'white', display: 'block' }}>
@@ -155,7 +156,7 @@ const BarraMenu = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="./imgC5/userlogo.jpg" />
+                <Avatar alt="Remy Sharp" src={imgUser} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -176,18 +177,12 @@ const BarraMenu = () => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-
                   <button
                       onClick={handleCerrarSesion}
                   >
                     {setting}
 
                   </button>
-
-
-
-
-
                 </MenuItem>
               ))}
             </Menu>

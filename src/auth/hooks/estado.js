@@ -7,7 +7,8 @@ const useAppState = create(
       token: "null",
       usuario: null,
       rol: null,
-      setCredenciales: (token, usuario, rol) => set({ token, usuario, rol }),
+      id: null, 
+      setCredenciales: (token, usuario, rol, id) => set({ token, usuario, rol, id }),
       obtenerEstado: () => set(), // Función para obtener el estado actual
     }), 
     { 

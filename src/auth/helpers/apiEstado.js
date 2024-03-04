@@ -6,8 +6,8 @@ export const iniciarSesion = async (username, password) => {
     const response = await axios.post('http://localhost:3000/usuario/login', { username, password });
 
     if (response.data.success) { 
-      const { token, usuario, rol } = response.data.data;
-      useAppState.getState().setCredenciales(token, usuario, rol);
+      const { token, usuario, rol,id } = response.data.data;
+      useAppState.getState().setCredenciales(token, usuario, rol, id);
       return response.data.success; 
     } 
   } catch (error) {
