@@ -117,7 +117,7 @@ export const EditarEmpleadoPage = () => {
             inf="¿El empleado esta activo?"
             options={[
               { value: 'activo', label: 'activo' },
-              { value: 'inactivo', label: 'inactivo' },
+              { value: 'baja', label: 'inactivo' },
             ]}
           />
           <Selectidfield

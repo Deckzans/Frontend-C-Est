@@ -1,8 +1,8 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { Button, Box, Grid, Typography } from '@mui/material';
+import { Button, Box, Grid, Typography, FormHelperText } from '@mui/material';
 
-export const FileField = ({ name, label, control, rules }) => (
+export const FileField = ({ name, label, control, rules,inf="recuerda subir solo imagenes" }) => (
   <Grid item xs={12} md={5}>
     <Controller
       name={name}
@@ -13,7 +13,7 @@ export const FileField = ({ name, label, control, rules }) => (
             type="file"
             id={name}
             style={{ display: 'none' }}
-            accept="application/pdf"  // Agregar el atributo accept para permitir solo archivos PDF
+            accept="*/*"  // Agregar el atributo accept para permitir solo archivos PDF
             onChange={(e) => field.onChange(e.target.files)}
           />
           <label htmlFor={name}>
@@ -35,6 +35,7 @@ export const FileField = ({ name, label, control, rules }) => (
               {fieldState?.error?.message}
             </Typography>
           )}
+          <FormHelperText sx={{ color: "blue" }}>{inf}</FormHelperText>
         </Box>
       )}
       rules={rules} // Asegúrate de pasar las reglas directamente al Controller

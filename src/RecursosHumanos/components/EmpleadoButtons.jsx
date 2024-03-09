@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const EmpleadoButtons = ({ onAdd, onEdit, onDelete, onVacaciones, onPermiso, onIncapacidad, onDiaEconomico, isEditDisabled, isDeleteDisabled, isVacacionesDisabled, isPermisoDisabled, isIncapacidadDisabled, isDiaEconomicoDisabled }) => {
+const EmpleadoButtons = ({ onAdd, onEdit, onDelete, onVacaciones, onPermiso, onIncapacidad, onDiaEconomico,onFormacion, isEditDisabled, isDeleteDisabled, isVacacionesDisabled, isPermisoDisabled, isIncapacidadDisabled, isDiaEconomicoDisabled,isFormacionDisabled }) => {
   return (
     <div style={{ marginBottom: '20px' }}>
       <Button onClick={onAdd}>Agregar</Button>
@@ -24,6 +24,9 @@ const EmpleadoButtons = ({ onAdd, onEdit, onDelete, onVacaciones, onPermiso, onI
       </Button>
       <Button onClick={onDiaEconomico} disabled={isDiaEconomicoDisabled}>
         Día Económico
+      </Button>
+      <Button onClick={onFormacion} disabled={isFormacionDisabled}>
+        Formacion
       </Button>
       {/* Otros botones según tus necesidades */}
     </div>

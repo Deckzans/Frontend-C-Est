@@ -13,35 +13,41 @@ import { FileField } from "../components/formularios/FileField"
 import Selectidfield from "../components/formularios/Selectidfield"
 
 
+
 export const AgregarEmpleadoPage = () => {
 
   const { usuario, id } = useAppState();
-  const { register,control, handleSubmit, reset } = useForm();
+  const { register, control, handleSubmit, reset } = useForm();
   const [open, setOpen] = useState(false);
+  const extensionesPermitidas = ["jpg", "jpeg", "png"];
+
 
   const handleSnackbarClose = () => {
-  //  return  console.log('lo hiciste bien haself wolf')
+    //  return  console.log('lo hiciste bien haself wolf')
     // setOpen(false);
     // setOpenError(false);
     // navigate('/'); // Redirigir al usuario a la página de inicio de sesión
   };
 
   const onSubmit = async (data) => {
-    // const empleadoData = {
-    //   ...data,
-    //   sueldoBruto: parseFloat(data.sueldoBruto),
-    //   sueldoNeto: parseFloat(data.sueldoNeto),
-    //   llave: parseFloat(data.llave),
-    //   fechaNacimiento: `${data.fechaNacimiento}T00:00:00.000Z`,
-    //   fechaIngreso: `${data.fechaIngreso}T00:00:00.000Z`,
-    //   // imagenEmpleado: data.imagenEmpleado[0].name,
-    //   usuarioId: id,
-    //   areaId: parseInt(data.areaId, 10),
-    //   escolaridadId: parseInt(data.escolaridadId, 10),
-    //   estadocivilid: parseInt(data.estadocivilid, 10),
-    // };
+    console.log('hola')
+    const archivoSeleccionado = data.imagenEmpleado[0];
 
-    const formData =new FormData();
+
+    if (!archivoSeleccionado) {
+      console.log("sin archivos")
+      return;
+    }
+
+    const extensionArchivo = archivoSeleccionado.name.split(".").pop().toLowerCase();
+
+    // Validar la extensión del archivo
+    if (!extensionesPermitidas.includes(extensionArchivo)) {
+      console.log("no incluye archivo correcto")
+      return;
+    }
+
+    const formData = new FormData();
     formData.append('aPaterno', data.aPaterno)
     formData.append('aMaterno', data.aMaterno)
     formData.append('nombre', data.nombre)
@@ -61,6 +67,7 @@ export const AgregarEmpleadoPage = () => {
     formData.append('estadocivilid', parseInt(data.estadocivilid, 10))
     formData.append('areaId', parseInt(data.areaId, 10))
     formData.append('imagenEmpleado2', data.imagenEmpleado[0])
+    console.log(formData)
 
     try {
       await registarEmpleado(formData);
@@ -74,7 +81,7 @@ export const AgregarEmpleadoPage = () => {
     }
 
     // console.log( data.imagenEmpleado[0])
-    console.log(empleadoData)
+    // console.log(formData)
   }
 
   const handleReset = () => {
@@ -101,7 +108,7 @@ export const AgregarEmpleadoPage = () => {
           <InputField name="cargo" label="cargo" rules={commonValidationRules} control={control} />
           <InputField name="sueldoBruto" label="suledo bruto" control={control} rules={commonValidationRulesNumber} type='number' />
           <InputField name="sueldoNeto" label="suledo neto" control={control} rules={commonValidationRulesNumber} type='number' />
-          <InputField name="llave" label="llave" control={control} rules={commonValidationRulesNumber} type='number' />
+          <InputField name="llave" label="llave" control={control} rules={{ required: 'Este campo es requerido' }} type='number' />
           <DateField name="fechaNacimiento" label="Fecha de Nacimiento" control={control} rules={{ required: 'este campo es requerido', }} />
           <DateField name="fechaIngreso" label="Fecha de ingreso" control={control} rules={{ required: 'Este campo es requerido' }} />
           <SelectField
@@ -147,7 +154,27 @@ export const AgregarEmpleadoPage = () => {
             inf="¿Cual es el estado civil?"
             options={estadoCivil}
           />
-           <FileField name="imagenEmpleado" label="Subir archvio" rules={{ required: 'este campo es requerido', }} control={control} />
+          <FileField name="imagenEmpleado" label="Subir archvio" rules={{
+            required: 'Este campo es requerido',
+            validate: {
+              customValidation: value => {
+                const archivoSeleccionado = value[0];
+
+                if (!archivoSeleccionado) {
+                  return 'Por favor, selecciona un archivo.';
+                }
+
+                const extensionArchivo = archivoSeleccionado.name.split(".").pop().toLowerCase();
+
+                // Validar la extensión del archivo
+                if (!extensionesPermitidas.includes(extensionArchivo)) {
+                  return 'Formato de archivo no válido. Solo se permiten archivos JPG, JPEG, o PNG.';
+                }
+
+                return true; // La validación es exitosa
+              },
+            },
+          }} control={control} />
 
           {/* <input type="file" name="imagenEmpleado" onChange={(e) => setFile(e.target.files[0])} {...register('imagenEmpleado')} /> */}
         </Grid>
