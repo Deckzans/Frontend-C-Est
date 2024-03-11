@@ -1,8 +1,10 @@
-import axios from 'axios';
+
+import { apiApp } from '../../api/apiUrl';
+
 
 export const traerDia = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:3000/accion/obtenerDia/${id}`);
+    const response = await apiApp.get(`/accion/obtenerDia/${id}`);
 
 
     if (response.data.success) {

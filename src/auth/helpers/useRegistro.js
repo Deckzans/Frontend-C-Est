@@ -1,8 +1,8 @@
-import axios from 'axios';
+import { apiApp } from '../../api/apiUrl';
 
 export const registarUsuario = async (data) => {
   try {
-    const response = await axios.post('http://localhost:3000/usuario/agregar', data);
+    const response = await apiApp.post('/usuario/agregar', data);
 
     if (response.data.success) { 
       return response.data.success; 

@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { apiApp } from '../../api/apiUrl';
 
 export const traerIncapacidades = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:3000/accion/obtenerIncapacidad/${id}`);
+    const response = await apiApp.get(`/accion/obtenerIncapacidad/${id}`);
 
 
     if (response.data.success) {

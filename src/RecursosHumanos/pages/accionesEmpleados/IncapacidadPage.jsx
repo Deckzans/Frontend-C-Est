@@ -5,11 +5,14 @@ import { cargarDatosEmpleadoInca} from "../../helpers";
 import {agregarIncapacidad } from "../../hooks/";
 import { DataTableEmpleado, IncapacidadForm} from "../../components";
 import { useForm } from "react-hook-form"
+import { SnackbarPersonalizado } from "../../../layout/Components/SnackBarPersonalizado";
 
 export const IncapacidadPage = () => {
     const { reset } = useForm();
     const { cl } = useParams();
     const [Datos, setDatos] = useState({})
+    const [open, setOpen] = useState(false);
+    const mensaje = "Incapacidad agregada correctamente";
     const [Incapacidades, setIncapacidades] = useState([])
 
     useEffect(() => {
@@ -46,6 +49,11 @@ export const IncapacidadPage = () => {
       selectableRows: 'none',
     };
 
+    const handleSnackbarClose = () => {
+      setOpen(false); 
+      window.location.reload();
+    };
+
     const onSubmit = async (data) => {
       const datos = new FormData();
       datos.append('archivo', data.nombreImagen[0])
@@ -56,8 +64,10 @@ export const IncapacidadPage = () => {
       datos.append('diasIncapacitado', parseInt(data.diasIncapacitado))
       datos.append('fechaIncapacidad', `${data.fechaIncapacidad}T00:00:00.000Z`)
       try {
-        await agregarIncapacidad(datos);
-        // setOpen(true); // Mostrar Snackbar de éxito
+       const response =  await agregarIncapacidad(datos);
+       if(response ) {     
+        setOpen(true); 
+    }
       } catch (error) {
         if (error.message === 'Error al ingresar empleado') {
           // setOpenError(true); // Mostrar Snackbar de error (usuario duplicado)
@@ -87,6 +97,7 @@ export const IncapacidadPage = () => {
           options={customOptions}
         />
       </Paper>
+      <SnackbarPersonalizado open={open} onClose={handleSnackbarClose} mensaje={mensaje} />
     </Container>
   );
 };

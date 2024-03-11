@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import useAppState from "../../auth/hooks/estado"
 import { registarEmpleado } from "../hooks/useRegistarEmpleado"
-import { commonValidationRules, commonValidationRulesNumber } from "../helpers/rules"
+import { commonValidationRules, commonValidationRulesNumber,commonValidationRulesCantidades } from "../helpers/rules"
 import { escolaridad, departamentos, estadoCivil, options } from '../helpers'
 import { Alert, Box, Button, Container, Grid, Snackbar, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
@@ -106,8 +106,8 @@ export const AgregarEmpleadoPage = () => {
           <InputField name="observaciones" label="observaciones" rules={commonValidationRules} control={control} />
           <InputField name="usuario" disabled={true} label="usuario" defaultValue={usuario} control={control} />
           <InputField name="cargo" label="cargo" rules={commonValidationRules} control={control} />
-          <InputField name="sueldoBruto" label="suledo bruto" control={control} rules={commonValidationRulesNumber} type='number' />
-          <InputField name="sueldoNeto" label="suledo neto" control={control} rules={commonValidationRulesNumber} type='number' />
+          <InputField name="sueldoBruto" label="suledo bruto" control={control} rules={commonValidationRulesCantidades} type='number' />
+          <InputField name="sueldoNeto" label="suledo neto" control={control} rules={commonValidationRulesCantidades} type='number' />
           <InputField name="llave" label="llave" control={control} rules={{ required: 'Este campo es requerido' }} type='number' />
           <DateField name="fechaNacimiento" label="Fecha de Nacimiento" control={control} rules={{ required: 'este campo es requerido', }} />
           <DateField name="fechaIngreso" label="Fecha de ingreso" control={control} rules={{ required: 'Este campo es requerido' }} />

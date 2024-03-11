@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { apiApp } from '../../api/apiUrl';
 
 export const agregarPermiso = async (data) => {
   try {
-    const response = await axios.post('http://localhost:3000/accion/agregarPermiso', data);
+    const response = await apiApp.post('/accion/agregarPermiso', data);
 
 
     if (response.data.success) {

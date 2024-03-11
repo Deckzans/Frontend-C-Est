@@ -10,6 +10,17 @@ export const commonValidationRulesNumber = {
   required: 'Este campo es requerido',
   validate: {
     nonNegative: value => parseFloat(value) >= 0 || 'El valor no puede ser negativo',
+    // nonLevel: value => parseFloat(value) >= 800 || 'Recuerda poner valores reales',
+    positive: value => parseFloat(value) > 0 || 'El valor debe ser mayor que cero',
+    // Agrega más reglas según tus necesidades
+    // ...
+  },
+};
+
+export const commonValidationRulesCantidades = {
+  required: 'Este campo es requerido',
+  validate: {
+    nonNegative: value => parseFloat(value) >= 0 || 'El valor no puede ser negativo',
     nonLevel: value => parseFloat(value) >= 800 || 'Recuerda poner valores reales',
     positive: value => parseFloat(value) > 0 || 'El valor debe ser mayor que cero',
     // Agrega más reglas según tus necesidades

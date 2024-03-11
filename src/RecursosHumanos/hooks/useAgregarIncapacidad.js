@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { apiApp } from '../../api/apiUrl';
 
 export const agregarIncapacidad = async (data) => {
   try {
-    const response = await axios.post('http://localhost:3000/accion/agregarIncapacidad', data);
+    const response = await apiApp.post('/accion/agregarIncapacidad', data);
     if (response.data.success) {
       // La solicitud se completó con éxito
       return response.data.success;

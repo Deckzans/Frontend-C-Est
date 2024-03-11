@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { Box, Button, Grid } from "@mui/material";
 
 
-export const IncapacidadForm = ({ onSubmit, handleReset, Datos }) => {
-    const { control, handleSubmit } = useForm();
+export const IncapacidadForm = ({ onSubmit, Datos }) => {
+    const { control, handleSubmit,reset} = useForm();
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
@@ -42,7 +42,7 @@ export const IncapacidadForm = ({ onSubmit, handleReset, Datos }) => {
                 <Button type="submit" variant="contained" color="primary" sx={{ mr: 2 }}>
                     Enviar
                 </Button>
-                <Button type="button" onClick={handleReset} sx={{ mr: 2 }} variant="contained" color="secondary">
+                <Button type="button" onClick={reset} sx={{ mr: 2 }} variant="contained" color="secondary">
                     Resetear
                 </Button>
                 <Link to="/home">

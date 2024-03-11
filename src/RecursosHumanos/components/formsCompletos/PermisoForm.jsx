@@ -5,8 +5,8 @@ import { InputField, DateField, FileField } from '../formularios';
 import { commonValidationRules } from '../../helpers';
 import { Link } from 'react-router-dom';
 
-export const PermisoForm = ({ onSubmit, handleReset, Datos }) => {
-  const { control, handleSubmit } = useForm();
+export const PermisoForm = ({ onSubmit, Datos }) => {
+  const { control, handleSubmit,reset } = useForm();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -36,7 +36,7 @@ export const PermisoForm = ({ onSubmit, handleReset, Datos }) => {
           <Button type="submit" variant="contained" color="primary" sx={{ mr: 2 }}>
             Enviar
           </Button>
-          <Button type="button" onClick={handleReset} sx={{ mr: 2 }} variant="contained" color="secondary">
+          <Button type="button" onClick={reset} sx={{ mr: 2 }} variant="contained" color="secondary">
             Resetear
           </Button>
           <Link to="/home">

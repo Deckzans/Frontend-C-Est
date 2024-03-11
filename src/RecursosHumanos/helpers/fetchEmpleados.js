@@ -1,8 +1,9 @@
 import axios from "axios";
+import { apiApp } from "../../api/apiUrl";
 
 export const obtenerEmpleados = async () => {
   try {
-    const response = await axios.get("http://localhost:3000/empleado/obtenerTodo");
+    const response = await apiApp.get(`/empleado/obtenerTodo`);
     return response.data.data;
   } catch (error) {
     console.error(error);

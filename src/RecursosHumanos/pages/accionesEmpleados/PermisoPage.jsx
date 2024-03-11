@@ -5,12 +5,16 @@ import { agregarPermiso } from '../../hooks';
 import { cargarDatosEmpleado } from '../../helpers';
 import { DataTableEmpleado, PermisoForm } from "../../components";
 import { useForm } from "react-hook-form";
+import { SnackbarPersonalizado } from "../../../layout/Components/SnackBarPersonalizado";
+
 
 export const PermisoPage = () => {
   const {reset } = useForm();
   const { cl } = useParams();
   const [Datos, setDatos] = useState({});
   const [Permisos, setPermisos] = useState([]);
+  const [open, setOpen] = useState(false);
+  const mensaje = "Permiso agregado correctamente";
 
   useEffect(() => {
     cargarDatosEmpleado(cl, setDatos, setPermisos);
@@ -44,6 +48,13 @@ export const PermisoPage = () => {
     selectableRows: 'none',
   };
 
+  
+  const handleSnackbarClose = () => {
+    setOpen(false); 
+    window.location.reload();
+  };
+
+
   const onSubmit = async (data) => {
     const datos = new FormData();
     datos.append('archivo', data.nombreImagen[0]);
@@ -54,7 +65,10 @@ export const PermisoPage = () => {
     datos.append('fechaRegreso', `${data.fechaRegreso}T00:00:00.000Z`);
 
     try {
-      await agregarPermiso(datos);
+     const response = await agregarPermiso(datos);
+     if(response ) {     
+      setOpen(true);
+  }
       // setOpen(true); // Mostrar Snackbar de éxito
     } catch (error) {
       if (error.message === 'Error al ingresar empleado') {
@@ -85,6 +99,7 @@ export const PermisoPage = () => {
           options={customOptions}
         />
       </Paper>
+      <SnackbarPersonalizado open={open} onClose={handleSnackbarClose} mensaje={mensaje} />
     </Container>
   );
 };

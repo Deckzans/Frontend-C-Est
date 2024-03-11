@@ -6,12 +6,15 @@ import { agregarFormacion } from "../../hooks/useAgregarFormacion";
 import { cargarFormacion } from "../../helpers";
 import { DataTableEmpleado } from "../../components";
 import { FormacionForm } from "../../components/formsCompletos/FormacionForm";
+import { SnackbarPersonalizado } from "../../../layout/Components/SnackBarPersonalizado";
 
 export const FormacionPage = () => {
     const { control, handleSubmit, reset } = useForm();
     const { cl } = useParams();
     const [Datos, setDatos] = useState({})
     const [Formacion, setFormacion] = useState([])
+    const [open, setOpen] = useState(false);
+    const mensaje = "Documento agregado correctamente"
 
     useEffect(() => {
       cargarFormacion(cl,setDatos,setFormacion)
@@ -47,6 +50,12 @@ const customOptions = {
   selectableRows: 'none',
 };
 
+const handleSnackbarClose = () => {
+  setOpen(false); 
+  window.location.reload();
+};
+
+
     const onSubmit = async (data) => {
 
       const datos = new FormData();
@@ -57,8 +66,12 @@ const customOptions = {
       datos.append('fechaCarga', `${data.fechaCarga}T00:00:00.000Z`)
       
       try {
-        await agregarFormacion(datos);
-        // setOpen(true); // Mostrar Snackbar de éxito
+       const response =  await agregarFormacion(datos);
+
+        if(response) {     
+          setOpen(true); 
+      }
+
       } catch (error) {
         if (error.message === 'Error al ingresar empleado') {
           // setOpenError(true); // Mostrar Snackbar de error (usuario duplicado)
@@ -88,6 +101,7 @@ const customOptions = {
           options={customOptions}
         />
       </Paper>
+      <SnackbarPersonalizado open={open} onClose={handleSnackbarClose} mensaje={mensaje} />
     </Container>
   )
 }

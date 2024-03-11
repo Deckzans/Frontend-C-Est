@@ -1,8 +1,10 @@
+
 import axios from 'axios';
+import { apiApp } from '../../api/apiUrl';
 
 export const agregarFormacion = async (data) => {
   try {
-    const response = await axios.post('http://localhost:3000/accion/agregarFormacion', data);
+    const response = await apiApp.post('accion/agregarFormacion', data);
 
 
     if (response.data.success) {

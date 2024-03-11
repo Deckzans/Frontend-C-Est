@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+import { apiApp } from '../../api/apiUrl';
 export const agregarVacaciones = async (data) => {
   try {
-    const response = await axios.post('http://localhost:3000/accion/agregarVacaciones', data);
+    const response = await apiApp.post('/accion/agregarVacaciones', data);
 
 
     if (response.data.success) {

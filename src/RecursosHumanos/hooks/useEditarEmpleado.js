@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { apiApp } from '../../api/apiUrl';
 
 export const editarEmpleado = async (id,data) => {
   try {
-    const response = await axios.put(`http://localhost:3000/empleado/editar/${id}`, data);
+    const response = await apiApp.put(`/empleado/editar/${id}`, data);
 
     if (response.data.success) { 
       return response.data.success; 

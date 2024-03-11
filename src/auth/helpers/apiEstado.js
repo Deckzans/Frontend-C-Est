@@ -1,9 +1,9 @@
-import axios from 'axios';
 import useAppState from '../hooks/estado';
+import { apiApp } from '../../api/apiUrl';
 
 export const iniciarSesion = async (username, password) => {
   try {
-    const response = await axios.post('http://localhost:3000/usuario/login', { username, password });
+    const response = await apiApp.post('/usuario/login', { username, password });
 
     if (response.data.success) { 
       const { token, usuario, rol,id } = response.data.data;

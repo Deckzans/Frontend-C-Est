@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+import { apiApp } from '../../api/apiUrl';
 export const traerVacaciones = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:3000/accion/obtenerVacaciones/${id}`);
+    const response = await apiApp.get(`/accion/obtenerVacaciones/${id}`);
 
 
     if (response.data.success) {

@@ -10,12 +10,14 @@ import { traerEmpleado } from "../../hooks/useEmpleadoEditar";
 import { agregarVacaciones } from "../../hooks/useAgregarVacaciones";
 import { DataTableEmpleado } from "../../components/DataTableEmpleado";
 import { traerVacaciones } from "../../hooks/traerVacaciones";
-
+import { SnackbarPersonalizado } from "../../../layout/Components/SnackBarPersonalizado";
 
 export const VacacionesPage = () => {
   const { control, handleSubmit, reset } = useForm();
   const { cl } = useParams();
   const [Datos, setDatos] = useState({})
+  const [open, setOpen] = useState(false);
+  const mensaje = "Vacaciones agregadas correctamente";
   const [Vacaciones, setVacaciones] = useState([]);
 
   useEffect(() => {
@@ -50,13 +52,11 @@ export const VacacionesPage = () => {
     cargarVacaciones();
   }, [cl]);
 
-
   const nuevosDatos = Vacaciones.map(vacacion => ({
     año: vacacion.year,
     nombre: vacacion.empleado.nombre, 
     archivo: vacacion.nombreImagen, 
   }));
-
 
 
   const columns = [
@@ -76,13 +76,15 @@ export const VacacionesPage = () => {
     },
   ];
   
-
   const customOptions = {
     responsive: 'standard',
     selectableRows: 'none',
   };
 
-
+  const handleSnackbarClose = () => {
+    setOpen(false); 
+    window.location.reload();
+  };
 
   const onSubmit = async (data) => {
 
@@ -99,8 +101,10 @@ export const VacacionesPage = () => {
     // const formDataObject = Object.fromEntries(formData.entries());
     // console.log(formDataObject);
     try {
-      await agregarVacaciones(datos);
-      // setOpen(true); // Mostrar Snackbar de éxito
+     const reponse = await agregarVacaciones(datos);
+     if(response ) {     
+      setOpen(true);
+  }
     } catch (error) {
       if (error.message === 'Error al ingresar empleado') {
         // setOpenError(true); // Mostrar Snackbar de error (usuario duplicado)
@@ -109,7 +113,6 @@ export const VacacionesPage = () => {
       }
     }
   }
-
 
   const handleReset = () => {
     reset();
@@ -174,6 +177,7 @@ export const VacacionesPage = () => {
           options={customOptions}
         />
       </Paper>
+      <SnackbarPersonalizado open={open} onClose={handleSnackbarClose} mensaje={mensaje} />
     </Container>
   )
 }

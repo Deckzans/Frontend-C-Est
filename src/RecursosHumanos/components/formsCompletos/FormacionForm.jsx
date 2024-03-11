@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 
 
 export const FormacionForm = ({ onSubmit, handleReset, Datos }) => {
-    const { control, handleSubmit } = useForm();
+    const { control, handleSubmit,reset } = useForm();
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
             <Grid  container spacing={2} sx={{ mt: 5 }}> 
@@ -38,7 +38,7 @@ export const FormacionForm = ({ onSubmit, handleReset, Datos }) => {
           <Button type="submit" variant="contained" color="primary" sx={{ mr: 2 }}>
             Enviar
           </Button>
-          <Button type="button" onClick={handleReset} sx={{ mr: 2 }} variant="contained" color="secondary">
+          <Button type="button" onClick={reset} sx={{ mr: 2 }} variant="contained" color="secondary">
             Resetear
           </Button>
           <Link to="/home">

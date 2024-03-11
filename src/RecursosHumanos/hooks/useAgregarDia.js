@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { apiApp } from '../../api/apiUrl';
 
 export const agregarDia = async (data) => {
   try {
-    const response = await axios.post('http://localhost:3000/accion/agregarDia', data);
+    const response = await apiApp.post('/accion/agregarDia', data);
 
 
     if (response.data.success) {

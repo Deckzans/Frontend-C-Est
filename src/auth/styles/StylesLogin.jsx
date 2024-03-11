@@ -1,7 +1,7 @@
 export const loginStyles = {
     container: {
       mx: "auto",
-      marginTop: 10,
+      marginTop: 15,
       display:"flex",
       // border:1,
       justifyContent: "center",
