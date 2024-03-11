@@ -3,7 +3,7 @@ import { loginStyles } from '../styles/StylesLogin';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { iniciarSesion } from '../helpers/apiEstado';
-import useAppState from '../hooks/estado';
+
 
 //importaciones react form 
 import { useForm } from "react-hook-form";
@@ -17,24 +17,24 @@ import Paper from "@mui/material/Paper";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Grid from '@mui/material/Unstable_Grid2';
 import Alert from "@mui/material/Alert";
-import Snackbar  from "@mui/material/Snackbar";
+import Snackbar from "@mui/material/Snackbar";
 
 
 export const FormIngresar = () => {
   // const { token, usuario, rol } = useAppState();
   const navigate = useNavigate();
-  const { register, handleSubmit,formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [open, setOpen] = useState(false);
   const [openError, setOpenError] = useState(false);
   const onSubmit = async (data) => {
     try {
-     const response =  await iniciarSesion(data.usuario, data.password);
-        
-      if(response){ 
+      const response = await iniciarSesion(data.usuario, data.password);
+
+      if (response) {
         console.log(response)
-          navigate('/home')
-          
-        } 
+        navigate('/home')
+
+      }
     } catch (error) {
       // Manejar el error aquí, si es necesario
       setOpenError(true);
@@ -72,7 +72,7 @@ export const FormIngresar = () => {
             },
           })}
         />
-         {errors.usuario && <span>{errors.usuario.message}</span>}
+        {errors.usuario && <span style={{color:'red'}} >{errors.usuario.message}</span>}
         <TextField
           margin="normal"
           fullWidth
@@ -85,24 +85,32 @@ export const FormIngresar = () => {
             required: 'Este campo es obligatorio',
           })}
         />
-        {errors.password && <span>{errors.password.message}</span>}
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 1 }}
-        >
-          Ingresar
-        </Button>
-        <Button
-          type="button"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 1, mb: 2 }}
-          onClick={handleRegistro}
-        >
-          Registrarse
-        </Button>
+        {errors.password && <span style={{color:'red'}}>{errors.password.message}</span>}
+
+        <Grid container spacing={1}>
+          <Grid xs={12} md={6}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="outlined"
+              sx={{ mt: 1, mb: 1 }}
+            >
+              Ingresar
+            </Button>
+          </Grid>
+          <Grid xs={12} md={6}>
+            <Button
+              type="button"
+              fullWidth
+              variant="outlined"
+              sx={{ mt: 1, mb: 1 }}
+              onClick={handleRegistro}
+            >
+              Registrarse
+            </Button>
+          </Grid>
+        </Grid>
+
         <Grid container spacing={1}>
           <Grid xs={12} md={12}>
             <Button
@@ -121,7 +129,7 @@ export const FormIngresar = () => {
                 severity="warning"
                 variant="filled"
               >
-                Contacta al departamento de sistemas! 
+                Contacta al departamento de sistemas!
               </Alert>
             </Snackbar>
             <Snackbar
