@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { iniciarSesion } from '../helpers/apiEstado';
 
-
 //importaciones react form 
 import { useForm } from "react-hook-form";
 
@@ -18,6 +17,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Grid from '@mui/material/Unstable_Grid2';
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
+import { traerUsuario } from '../../RecursosHumanos/hooks/useTraerUsuarios';
 
 
 export const FormIngresar = () => {
@@ -26,20 +26,29 @@ export const FormIngresar = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [open, setOpen] = useState(false);
   const [openError, setOpenError] = useState(false);
-  const onSubmit = async (data) => {
-    try {
-      const response = await iniciarSesion(data.usuario, data.password);
 
-      if (response) {
-        console.log(response)
-        navigate('/home')
+ const onSubmit = async (data) => {
+  try {
+    const response = await iniciarSesion(data.usuario, data.password);
 
+    if (response.success) {
+      // Obtener información del usuario, incluido el rol
+      const userInfo = await traerUsuario(response.id); // Asumiendo que traerUsuario devuelve la información del usuario
+      const rol = userInfo.data.rol;
+
+      // Verificar el rol del usuario y redirigir según corresponda
+      if (rol === "administrador") {
+        navigate('/administrador');
+      } else {
+        navigate('/home');
       }
-    } catch (error) {
-      // Manejar el error aquí, si es necesario
-      setOpenError(true);
     }
-  };
+  } catch (error) {
+    // Manejar el error aquí, si es necesario
+    setOpenError(true);
+    console.log(error)
+  }
+};
 
   const handleRegistro = () => {
     navigate('/registro')
@@ -92,7 +101,7 @@ export const FormIngresar = () => {
             <Button
               type="submit"
               fullWidth
-              variant="outlined"
+              variant="contained"
               sx={{ mt: 1, mb: 1 }}
             >
               Ingresar
@@ -102,7 +111,7 @@ export const FormIngresar = () => {
             <Button
               type="button"
               fullWidth
-              variant="outlined"
+              variant="contained"
               sx={{ mt: 1, mb: 1 }}
               onClick={handleRegistro}
             >

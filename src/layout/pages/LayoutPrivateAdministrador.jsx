@@ -1,18 +1,16 @@
 
-import axios from "axios"
 import { useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
-import BarraMenu from "../Components/BarraMenu"
 import { Footer } from "../Components/Footer"
 import useAppState from "../../auth/hooks/estado"
 import verificarToken from "../helpers/Verificacion"
+import {BarraMenuAdministrador} from '../Components/BarraMenuAdministrador'
 import { traerUsuario } from "../../RecursosHumanos/hooks/useTraerUsuarios"
 
-
-
-export const LayoutPrivate = () => {
+export const LayoutPrivateAdministrador = () => {
   const navigate = useNavigate();
-  const { token,id} = useAppState();
+  const { token,id } = useAppState();
+
 
   useEffect(() => {
     const checkToken = async () => {
@@ -35,12 +33,17 @@ export const LayoutPrivate = () => {
 
     checkToken();
   }, [token, navigate]);
+
+  useEffect(() => {
+    // Lógica de verificación del token
+    verificarToken(token, navigate);
+  }, [token, navigate]);
  
 
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-        <BarraMenu />
+        <BarraMenuAdministrador/>
 
         <div style={{ flex: 1, minHeight: 0 }}>
           {/* Contenido del Outlet */}

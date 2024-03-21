@@ -1,70 +1,109 @@
 import { createBrowserRouter } from "react-router-dom";
-import {Login,Regristar} from '../auth'
+import { Login, Regristar } from '../auth'
 import { LayoutPrivate } from "../layout/pages/LayoutPrivate";
 import { EmpleadoPage } from "../RecursosHumanos/pages/EmpleadoPage";
 import { DepartamentoPage } from "../RecursosHumanos/pages/DepartamentoPage";
 import { EditarEmpleadoPage } from "../RecursosHumanos/pages/EditarEmpleadoPage";
 import { AgregarEmpleadoPage } from "../RecursosHumanos/pages/AgregarEmpleadoPage";
-import {VacacionesPage} from '../RecursosHumanos/pages/accionesEmpleados/VacacionesPage'
+import { VacacionesPage } from '../RecursosHumanos/pages/accionesEmpleados/VacacionesPage'
 import { PermisoPage } from "../RecursosHumanos/pages/accionesEmpleados/PermisoPage";
 import { IncapacidadPage } from "../RecursosHumanos/pages/accionesEmpleados/IncapacidadPage";
 import { DiaEconomicoPage } from "../RecursosHumanos/pages/accionesEmpleados/DiaEconomicoPage";
 import { FormacionPage } from "../RecursosHumanos/pages/accionesEmpleados/FormacionPage";
+import { EditarDocDiaPage } from "../RecursosHumanos/pages/edicionArchivos/EditarDocDiaPage";
+import { EditarDocVacacionPage } from "../RecursosHumanos/pages/edicionArchivos/EditarDocVacacionPage";
+import { EditarDocPermisoPage } from "../RecursosHumanos/pages/edicionArchivos/EditarDocPermisoPage";
+import { EditarDocIncapacidadPage } from "../RecursosHumanos/pages/edicionArchivos/EditarDocIncapacidadPage";
+import { EditarDocFormacionPage } from "../RecursosHumanos/pages/edicionArchivos/EditarDocFormacionPage";
+import { AdministradorPage } from "../RecursosHumanos/pages/AdministradorPage";
+import { LayoutPrivateAdministrador } from "../layout/pages/LayoutPrivateAdministrador";
+import { EditarUsuarioPage } from "../RecursosHumanos/pages/EditarUsuarioPage";
 
-
-export const router = createBrowserRouter([ 
-    { 
-        path:'/',
-        element:<Login/>,
+export const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Login />,
     },
-    { 
-        path:'/registro',
-        element:<Regristar/>,
+    {
+        path: '/registro',
+        element: <Regristar />,
     },
     {
         path: '/home',
-        element: <LayoutPrivate/>,
-        children: [ { 
+        element: <LayoutPrivate />,
+        children: [{
             index: true,
             element: <EmpleadoPage />,
-        }, 
-        { 
-            path:'departamentos',
-            element:<DepartamentoPage/>
         },
-        { 
-            path:'personal',
-            element:<EmpleadoPage/>
+        {
+            path: 'departamentos',
+            element: <DepartamentoPage />
         },
-        { 
-            path:'editar/:cl',
-            element:<EditarEmpleadoPage/>
+        {
+            path: 'personal',
+            element: <EmpleadoPage />
         },
-        { 
-            path:'agregar',
-            element:<AgregarEmpleadoPage/>
+        {
+            path: 'editar/:cl',
+            element: <EditarEmpleadoPage />
         },
-        { 
-            path:'vacaciones/:cl',
-            element:<VacacionesPage/>
+        {
+            path: 'agregar',
+            element: <AgregarEmpleadoPage />
         },
-        { 
-            path:'permiso/:cl',
-            element:<PermisoPage/>
+        {
+            path: 'vacaciones/:cl',
+            element: <VacacionesPage />
         },
-        { 
-            path:'incapacidad/:cl',
-            element:<IncapacidadPage/>
+        {
+            path: 'permiso/:cl',
+            element: <PermisoPage />
         },
-        { 
-            path:'dia/:cl',
-            element:<DiaEconomicoPage/>
+        {
+            path: 'incapacidad/:cl',
+            element: <IncapacidadPage />
         },
-        { 
-            path:'formacion/:cl',
-            element:<FormacionPage/>
+        {
+            path: 'dia/:cl',
+            element: <DiaEconomicoPage />
         },
-    
-    ]
+        {
+            path: 'formacion/:cl',
+            element: <FormacionPage />
+        },
+        {
+            path: 'editardocdia/:cl',
+            element: <EditarDocDiaPage />
+        },
+        {
+            path: 'editardocVacacion/:cl',
+            element: <EditarDocVacacionPage />
+        },
+        {
+            path: 'editarPermiso/:cl',
+            element: <EditarDocPermisoPage />
+        },
+        {
+            path: 'editarIncapacidad/:cl',
+            element: <EditarDocIncapacidadPage />
+        },
+        {
+            path: 'editarFormacion/:cl',
+            element: <EditarDocFormacionPage />
+        },
+
+        ]
     },
+    {
+        path: '/administrador',
+        element: <LayoutPrivateAdministrador />,
+        children: [{
+            index:true, 
+            element:<AdministradorPage/>
+        },
+        {
+            path: 'editarUsuario/:cl',
+            element: <EditarUsuarioPage />
+        },]
+    }
 ])

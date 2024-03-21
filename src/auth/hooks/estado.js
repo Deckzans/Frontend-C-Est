@@ -4,7 +4,7 @@ import {persist} from 'zustand/middleware'
 const useAppState = create( 
   persist (
     (set) => ({
-      token: "null",
+      token: null,
       usuario: null,
       rol: null,
       id: null, 

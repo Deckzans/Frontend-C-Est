@@ -4,22 +4,28 @@ import { InputField } from "../../components/formularios/InpuetField";
 import { DateField } from "../../components/formularios/DateField";
 import { commonValidationRules } from "../../helpers/rules";
 import { FileField } from "../../components/formularios/FileField";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { traerEmpleado } from "../../hooks/useEmpleadoEditar";
 import { agregarVacaciones } from "../../hooks/useAgregarVacaciones";
 import { DataTableEmpleado } from "../../components/DataTableEmpleado";
 import { traerVacaciones } from "../../hooks/traerVacaciones";
 import { SnackbarPersonalizado } from "../../../layout/Components/SnackBarPersonalizado";
+import PdfModal from "../../components/PdfModal";
+import { DeleteForever, Description } from "@mui/icons-material";
+import { eliminarDocVacacion, eliminarVacacion } from "../../hooks";
 
 export const VacacionesPage = () => {
   const { control, handleSubmit, reset } = useForm();
   const { cl } = useParams();
   const [Datos, setDatos] = useState({})
   const [open, setOpen] = useState(false);
-  const mensaje = "Vacaciones agregadas correctamente";
+  const [open2, setOpen2] = useState(false);
+  const [Mensaje, setMensaje] = useState()
+  const [selectedPdfUrl, setSelectedPdfUrl] = useState('');
   const [Vacaciones, setVacaciones] = useState([]);
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     const cargarDatosEmpleado = async () => {
       try {
@@ -53,39 +59,90 @@ export const VacacionesPage = () => {
   }, [cl]);
 
   const nuevosDatos = Vacaciones.map(vacacion => ({
+    id: vacacion.id,
     año: vacacion.year,
-    nombre: vacacion.empleado.nombre, 
-    archivo: vacacion.nombreImagen, 
+    archivo: vacacion.nombreImagen,
   }));
 
+  const handleEliminarVacacion = async (id, nombre) => {
+    try {
+
+      const responseDocEliminado = await eliminarDocVacacion(nombre)
+
+      if(responseDocEliminado.status === 200) { 
+        const response = await eliminarVacacion(id);
+        if (response) {
+          setOpen(true);
+          setMensaje("Vacacion eliminado correctamente");
+          await cargarDatos();
+        }
+      }
+      
+    } catch (error) {
+      console.error(`Error al intentar eliminar el día: ${error.message}`);
+    }
+  };
+
+  const handleEditarDia = (id) => {
+    navigate(`/home/editardocVacacion/${id}`)
+
+  }
 
   const columns = [
+    { name: 'id', label: 'id' },
     { name: 'año', label: 'Año de vacaciones' },
-    { name: 'nombre', label: 'nombre del empleado' },
     { name: 'archivo', label: 'nombre archivo' },
     {
       name: 'descargar',
       label: 'Descargar Documento',
       options: {
         customBodyRender: (value, tableMeta) => (
-          <a href={`http://localhost:3000/descargar/vacaciones/${tableMeta.rowData[2]}`} download>
-          Descargar
-        </a>
+          <Button
+            onClick={() => openPdfModal(`http://localhost:3000/descargar/vacaciones/${tableMeta.rowData[2]}`)}
+            style={{ textTransform: 'none' }} // Desactivar la transformación a mayúsculas
+          >
+            Ver documento
+          </Button>
+        ),
+      },
+    },
+    {
+      name: "acciones",
+      label: "acciones",
+      options: {
+        customBodyRender: (_, tableMeta) => (
+          <>
+            <Button endIcon={<Description />} sx={{ mb: 1 }} fullWidth size="small" variant="contained" onClick={() => handleEditarDia(tableMeta.rowData[0])}>
+              Editar
+            </Button>
+            <Button endIcon={<DeleteForever />} size="small" fullWidth color="error" variant="contained" onClick={() => handleEliminarVacacion(tableMeta.rowData[0], tableMeta.rowData[2])}>
+              Eliminar
+            </Button>
+          </>
         ),
       },
     },
   ];
-  
+
   const customOptions = {
     responsive: 'standard',
     selectableRows: 'none',
   };
 
   const handleSnackbarClose = () => {
-    setOpen(false); 
+    setOpen(false);
     window.location.reload();
   };
 
+  const openPdfModal = (pdfUrl) => {
+    setSelectedPdfUrl(pdfUrl);
+    setOpen2(true);
+  };
+
+  const closePdfModal = () => {
+    setSelectedPdfUrl('');
+    setOpen2(false);
+  };
   const onSubmit = async (data) => {
 
     const datos = new FormData();
@@ -101,10 +158,11 @@ export const VacacionesPage = () => {
     // const formDataObject = Object.fromEntries(formData.entries());
     // console.log(formDataObject);
     try {
-     const reponse = await agregarVacaciones(datos);
-     if(response ) {     
-      setOpen(true);
-  }
+      const response = await agregarVacaciones(datos);
+      if (response) {
+        setOpen(true);
+        setMensaje("Vacacion agregada correctamente");
+      }
     } catch (error) {
       if (error.message === 'Error al ingresar empleado') {
         // setOpenError(true); // Mostrar Snackbar de error (usuario duplicado)
@@ -129,7 +187,7 @@ export const VacacionesPage = () => {
         <Grid container spacing={2} sx={{ mt: 5 }}>
           <InputField name="periodo" label="periodo" rules={commonValidationRules} control={control} />
           <InputField name="year" label="Año" rules={commonValidationRules} control={control} />
-          <InputField name="empleadoId " disabled={true} label={Datos.nombre} control={control} />
+          <InputField name="empleadoId " disabled={true} label={`Empleado: ${Datos.nombre} ${Datos.aPaterno} ${Datos.aMaterno} `} control={control} />
           <DateField name="fechaInicio" label="Fecha de Inicio" control={control} rules={{ required: 'este campo es requerido', }} />
           <DateField name="fechaTermino" label="Fecha de termino" control={control} rules={{ required: 'este campo es requerido', }} />
           <DateField name="integracion" label="Fecha de integracion" control={control} rules={{ required: 'este campo es requerido', }} />
@@ -177,7 +235,9 @@ export const VacacionesPage = () => {
           options={customOptions}
         />
       </Paper>
-      <SnackbarPersonalizado open={open} onClose={handleSnackbarClose} mensaje={mensaje} />
+      <SnackbarPersonalizado open={open} onClose={handleSnackbarClose} mensaje={Mensaje} />
+      {/* Modal para la previsualización del PDF */}
+      <PdfModal open={open2} pdfUrl={selectedPdfUrl} onClose={closePdfModal} />
     </Container>
   )
 }

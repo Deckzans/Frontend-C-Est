@@ -1,11 +1,13 @@
-import { Alert, Box, Button, Container, Grid, Paper, Snackbar, Typography } from "@mui/material"
-import { useForm } from "react-hook-form"
-import { useNavigate, useParams } from "react-router-dom";
+import { Box, Button, Container, Paper, Typography } from "@mui/material"
+import {useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { agregarDia } from "../../hooks/useAgregarDia";
 import { cargarDatosDia } from "../../helpers";
 import { DataTableEmpleado, DiaForm } from "../../components";
 import { SnackbarPersonalizado } from "../../../layout/Components/SnackBarPersonalizado";
+import { eliminarDia, eliminarDocDia } from "../../hooks";
+import { DeleteForever,Description } from "@mui/icons-material";
+import PdfModal from "../../components/PdfModal";
 
 
 export const DiaEconomicoPage = () => {
@@ -13,34 +15,83 @@ export const DiaEconomicoPage = () => {
   const [Datos, setDatos] = useState({})
   const [DiaEconomico, setDiaEconomico] = useState([])
   const [open, setOpen] = useState(false);
-  const mensaje = "Dia agregado correctamente";
+  const [open2, setOpen2] = useState(false);
+  const [selectedPdfUrl, setSelectedPdfUrl] = useState('');
+  const [Mensaje, setMensaje] = useState()
+  const navigate = useNavigate();
   
   useEffect(() => {
     cargarDatosDia(cl, setDatos, setDiaEconomico)
   }, [cl]);
 
+  const cargarDatos = async () => {
+    await cargarDatosDia(cl, setDatos, setDiaEconomico);
+  };
+
+  const handleEliminarDia = async (id,nombre) => {
+    try {
+
+      const responseDocEliminado = await eliminarDocDia(nombre)
+      if(responseDocEliminado.status === 200){ 
+        const response = await eliminarDia(id);
+        if (response) {
+          setOpen(true);
+          setMensaje("Día eliminado correctamente");
+          await cargarDatos();
+        }
+      }
+
+    } catch (error) {
+      console.error(`Error al intentar eliminar el día: ${error.message}`);
+    }
+  };
+
+  const handleEditarDia = (id) => { 
+        navigate(`/home/editardocdia/${id}`)
+        
+  }
+
   const nuevosDatos = DiaEconomico.map(dia => ({
+    id: dia.id,
     observaciones: dia.observaciones,
     diasTotales: dia.diasTotales,
     fechaDiasRestantes: dia.fechaDiasRestantes,
-    nombre: dia.empleado.nombre,
     nombreDoc: dia.nombreImagen,
   }))
 
   const columns = [
-    { name: 'nombre', label: 'Nombre del empleado' },
+    { name: 'id', label: 'id' },
     { name: 'observaciones', label: 'observaciones' },
     { name: 'diasTotales', label: 'dias Totales' },
     { name: 'fechaDiasRestantes', label: 'Dias Restantes' },
     { name: 'nombreDoc', label: 'Nombre archivo' },
     {
       name: 'descargar',
-      label: 'Descargar Documento',
+      label: 'Documento',
       options: {
         customBodyRender: (_, tableMeta) => (
-          <a href={`http://localhost:3000/descargar/dia/${tableMeta.rowData[4]}`} download>
-            Descargar
-          </a>
+          <Button
+          onClick={() => openPdfModal(`http://localhost:3000/descargar/dia/${tableMeta.rowData[4]}`)}
+          style={{ textTransform: 'none' }} // Desactivar la transformación a mayúsculas
+        >
+          Ver documento
+        </Button>
+        ),
+      },
+    },
+    {
+      name: "acciones",
+      label: "acciones",
+      options: {
+        customBodyRender: (_, tableMeta) => (
+          <>
+          <Button endIcon={<Description />}  sx={{mb:1}} fullWidth size="small"  variant="contained" onClick={() => handleEditarDia(tableMeta.rowData[0])}>
+            Editar
+          </Button>
+          <Button endIcon={<DeleteForever />} size="small" fullWidth color="error"  variant="contained" onClick={() => handleEliminarDia(tableMeta.rowData[0],tableMeta.rowData[4])}>
+            Eliminar
+          </Button>
+        </>
         ),
       },
     },
@@ -55,6 +106,16 @@ export const DiaEconomicoPage = () => {
   const handleSnackbarClose = () => {
     setOpen(false); 
     window.location.reload();
+  };
+
+  const openPdfModal = (pdfUrl) => {
+    setSelectedPdfUrl(pdfUrl);
+    setOpen2(true);
+  };
+  
+  const closePdfModal = () => {
+    setSelectedPdfUrl('');
+    setOpen2(false);
   };
 
 
@@ -73,6 +134,7 @@ export const DiaEconomicoPage = () => {
       const response = await agregarDia(datos);
 
       if(response ) {     
+            setMensaje("Dia agregado correctamente");
             setOpen(true);
         }
     } catch (error) {
@@ -85,14 +147,14 @@ export const DiaEconomicoPage = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
-      <Box textAlign="center" mt={10}>
+    <Container maxWidth="lg" sx={{ mt: 2, mb: 5 }}>
+      <Box textAlign="center" mt={5}>
         <Typography variant="h5" gutterBottom>
           Día economico
         </Typography>
       </Box>
       <DiaForm onSubmit={onSubmit} Datos={Datos} />
-      <Paper sx={{ mt: 5, padding: 2 }}>
+      <Paper  sx={{ mt: 5, padding: 2 }}>
         <DataTableEmpleado
           data={nuevosDatos}
           columns={columns}
@@ -100,7 +162,8 @@ export const DiaEconomicoPage = () => {
           options={customOptions}
         />
       </Paper>
-      <SnackbarPersonalizado open={open} onClose={handleSnackbarClose} mensaje={mensaje} />
+      <SnackbarPersonalizado open={open} onClose={handleSnackbarClose} mensaje={Mensaje} />
+      <PdfModal open={open2} pdfUrl={selectedPdfUrl} onClose={closePdfModal} />
     </Container>
   )
 }

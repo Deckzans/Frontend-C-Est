@@ -16,10 +16,10 @@ import useAppState from '../../auth/hooks/estado';
 
 
 
-const pages = ['Personal', 'Departamentos', 'Requisiciones', 'Bajas'];
+const pages = ['administrador'];
 const settings = ['Cerrar Sesión'];
 
-const BarraMenu = () => {
+export const BarraMenuAdministrador = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const imgUrl = '/imgC5/logo.jpg'
@@ -105,7 +105,7 @@ const BarraMenu = () => {
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
                     key={page}
-                    to={`/home/${page.toLowerCase()}`}
+                    to={`/${page.toLowerCase()}`}
                     style={{ textDecoration: 'none' }}
                   >
                     <Button sx={{ my: 2, color: 'black' }}>
@@ -143,7 +143,7 @@ const BarraMenu = () => {
             {pages.map((page) => (
               <Link
                 key={page}
-                to={`/home/${page.toLowerCase()}`}
+                to={`/${page.toLowerCase()}`}
                 style={{ textDecoration: 'none' }}
               >
                 <Button sx={{ my: 2, color: 'white', display: 'block' }}>
@@ -192,4 +192,4 @@ const BarraMenu = () => {
     </AppBar>
   );
 }
-export default BarraMenu;
+

@@ -10,7 +10,7 @@ const verificarToken = async (token, navigate) => {
     });
 
     if (response.data.success) {
-      // Token válido, continuar con la lógica de LayoutPrivate
+      return response.data.success
       console.log('Token válido');
     } else {
       // Token no válido, redirigir al login

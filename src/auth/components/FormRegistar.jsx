@@ -52,129 +52,117 @@ export const FormRegistrar = () => {
         <Typography variant="h5" component="h1">
           Ingresar
         </Typography>
+        <TextField
+          margin="normal"
+          fullWidth
+          id="nombre"
+          label="Nombre"
+          name="nombre"
+          autoComplete="nombre"
+          autoFocus
+          {...register('nombre', {
+            required: 'Este campo es obligatorio',
+            minLength: {
+              value: 5,
+              message: 'El nombre debe tener al menos 5 caracteres'
+            },
+            pattern: {
+              value: /^[A-Za-z]+$/,
+              message: 'El nombre solo debe contener letras'
+            }
+          })}
+          sx={{ mt: 1 }}
+        />
+        {errors.nombre && <span style={{ color: 'red' }}>{errors.nombre.message}</span>}
+
+        <TextField
+          margin="normal"
+          fullWidth
+          id="usuario"
+          label="Usuario"
+          name="usuario"
+          autoComplete="usuario"
+          {...register('usuario', {
+            required: 'Este campo es obligatorio',
+            minLength: {
+              value: 5,
+              message: 'El usuario debe tener al menos 5 caracteres'
+            },
+            pattern: {
+              value: /^[A-Za-z]+$/,
+              message: 'El usuario solo debe contener letras'
+            }
+          })}
+          sx={{ mt: 1 }}
+        />
+        {errors.usuario && <span style={{ color: 'red' }}>{errors.usuario.message}</span>}
+
+        <TextField
+          margin="normal"
+          fullWidth
+          id="password"
+          label="Contraseña"
+          name="password"
+          autoComplete="password"
+          type="password"
+          {...register('password', {
+            required: 'Este campo es obligatorio', minLength: {
+              value: 8,
+              message: 'El área debe tener al menos 8 caracteres'
+            },
+          })}
+          sx={{ mt: 1 }}
+        />
+        {errors.password && <span style={{ color: 'red' }}>{errors.password.message}</span>}
+
+        <TextField
+          margin="normal"
+          fullWidth
+          id="area"
+          label="Área"
+          name="area"
+          defaultValue='Recursos Humanos'
+          InputProps={{
+            readOnly: true,
+          }}
+          autoComplete="area"
+          {...register('area')}
+          sx={{ mt: 1 }}
+        />
+
+        <TextField
+          style={{ display: 'none' }}
+          margin="normal"
+          fullWidth
+          id="rol"
+          label="Rol"
+          name="rol"
+          value="estandar"
+          disabled
+        />
+        {errors.rol && <span style={{ color: 'red' }}>{errors.rol.message}</span>}
+
+
         <Grid container spacing={1} sx={{ mt: 1 }}>
-          <Grid item xs={12} md={6} sx={{ p: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="nombre"
-              label="nombre"
-              name="nombre"
-              autoComplete="nombre"
-              autoFocus
-              {...register('nombre', {
-                required: 'Este campo es obligatorio',
-                minLength: {
-                  value: 5,
-                  message: 'El nombre debe tener al menos 5 caracteres'
-                },
-                pattern: {
-                  value: /^[A-Za-z]+$/,
-                  message: 'El nombre solo debe contener letras'
-                }
-              })}
-            />
-            {errors.nombre && <span style={{ color: 'red' }}>{errors.nombre.message}</span>}
-          </Grid>
-          <Grid item xs={12} md={6} sx={{ p: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="usuario"
-              label="usuario"
-              name="usuario"
-              autoComplete="usuario"
-              {...register('usuario', {
-                required: 'Este campo es obligatorio',
-                minLength: {
-                  value: 5,
-                  message: 'El usuario debe tener al menos 5 caracteres'
-                },
-                pattern: {
-                  value: /^[A-Za-z]+$/,
-                  message: 'El usuario solo debe contener letras'
-                }
-              })}
-            />
-            {errors.usuario && <span style={{ color: 'red' }}>{errors.usuario.message}</span>}
-          </Grid>
-          <Grid item xs={12} md={6} sx={{ p: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="password"
-              label="contraseña"
-              name="password"
-              autoComplete="password"
-              type="password"
-              {...register('password', {
-                required: 'Este campo es obligatorio', minLength: {
-                  value: 8,
-                  message: 'El área debe tener al menos 8 caracteres'
-                },
-              })}
-            />
-            {errors.password && <span style={{ color: 'red' }}>{errors.password.message}</span>}
-          </Grid>
-          <Grid item xs={12} md={6} sx={{ p: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="area"
-              label="area"
-              name="area"
-              value='Recursos Humanos'
-              disabled
-              autoComplete="area"
-              {...register('area', {
-                required: 'Este campo es obligatorio',
-                minLength: {
-                  value: 5,
-                  message: 'El área debe tener al menos 5 caracteres'
-                },
-                pattern: {
-                  value: /^[A-Za-z]+$/,
-                  message: 'El área solo debe contener letras'
-                }
-              })}
-            />
-            {errors.area && <span style={{ color: 'red' }}>{errors.area.message}</span>}
-          </Grid>
-          <Grid item xs={12} md={12} sx={{ p: 1 }}>
-            <TextField
-            style={{ display: 'none'}}
-              margin="normal"
-              fullWidth
-              id="rol"
-              label="Rol"
-              name="rol"
-              value="estandar"
-              disabled
-            />
-            {errors.rol && <span style={{ color: 'red' }}>{errors.rol.message}</span>}
-          </Grid>
-        </Grid>
-        
-        <Grid container spacing={1} sx={{ mt: 1 }}>
-          <Grid xs={12} md={6} sx={{ p: 1 }} >
+          <Grid item xs={12} md={6} sx={{ p: 1 }} >
             <Button
               type="submit"
               fullWidth
-              variant="outlined"
+              variant="contained"
               sx={{ mt: 1, mb: 1 }}
             >
               Registrarse
             </Button>
           </Grid>
-          <Grid xs={12} md={6} sx={{ p: 1 }}>
+          <Grid item xs={12} md={6} sx={{ p: 1 }}>
             <Button
               type="button"
               fullWidth
-              variant="outlined"
+              variant="contained"
               sx={{ mt: 1, mb: 1 }}
               onClick={handleLogin}
             >
-              login
+              Regresar
             </Button>
           </Grid>
         </Grid>

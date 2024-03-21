@@ -6,7 +6,7 @@ export const commonValidationRules = {
   },
   // Agrega más reglas según tus necesidades
 };
-export const commonValidationRulesNumber = {
+export const  commonValidationRulesNumber = {
   required: 'Este campo es requerido',
   validate: {
     nonNegative: value => parseFloat(value) >= 0 || 'El valor no puede ser negativo',

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { apiApp } from '../../api/apiUrl';
 
 export const editarEmpleado = async (id,data) => {

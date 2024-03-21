@@ -4,7 +4,7 @@ import { DateField, FileField, InputField } from "../formularios";
 import { useForm } from "react-hook-form";
 
 
-export const FormacionForm = ({ onSubmit, handleReset, Datos }) => {
+export const FormacionForm = ({ onSubmit, Datos }) => {
     const { control, handleSubmit,reset } = useForm();
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

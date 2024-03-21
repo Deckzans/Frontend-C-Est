@@ -4,7 +4,7 @@ import { DateField, FileField, InputField } from "../formularios";
 import { commonValidationRulesNumber,commonValidationRulesCantidades } from "../../helpers";
 import { Link } from "react-router-dom";
 
-export const DiaForm = ({ onSubmit,Datos,block }) => {
+export const DiaForm = ({ onSubmit,Datos }) => {
   const { control, handleSubmit,reset } = useForm();
 
   return (
@@ -44,7 +44,7 @@ export const DiaForm = ({ onSubmit,Datos,block }) => {
         />
       </Grid>
       <Box mt={3}>
-        <Button type="submit" variant="contained" color="primary" sx={{ mr: 2 }} disabled={block}>
+        <Button type="submit" variant="contained" color="primary" sx={{ mr: 2 }}>
           Enviar
         </Button>
         <Button type="button"  onClick={reset} sx={{ mr: 2 }} variant="contained" color="secondary">
